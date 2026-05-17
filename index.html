@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Événement Ladies Convo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&family=Inter:wght@200;300;400&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      font-family: 'Inter', sans-serif !important;
+      background: #fcfbfb;
+    }
+
+    /* NAVBAR COMPACTE */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: linear-gradient(90deg,#aa587d, #b99ba9);
+      padding: 20px 0;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      display: inline-block;
+      color: #fff;
+      margin: 0 5px;
+      font-size: 0.75em;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      font-weight: 200;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+/* Ce bloc va "pousser" tout ton contenu vers le bas */
+.nav-spacer {
+    height: 65px; /* La hauteur exacte de ta nav dorée */
+    width: 100%;
+    display: block;
+}
+
+/* On nettoie la section event pour qu'elle ne crée pas de conflit */
+#event {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* On ajuste le masque du premier slider pour qu'il ne cache pas le haut */
+#event .slider {
+    mask-image: linear-gradient(to bottom, black 95%, transparent 100%) !important;
+    -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%) !important;
+    margin-bottom: 0;
+}
+    /* SECTIONS AJUSTÉES : PLUS DE VIDE */
+    section {
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      padding: 0; 
+      
+    }
+
+    #event { padding-top: 50px; margin-top: 60px;}
+
+    /* IMAGES FLUIDES */
+    .full-screen-img, .slide {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* SLIDER COMPACT */
+    .slider {
+      position: relative;
+      width: 100%;
+      line-height: 0; 
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+
+    .slide.first-slide {
+      position: relative;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .btn-download {
+    display: inline-block;
+    background: #49121b;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.btn-download:hover {
+    background: #f9d3e4;
+    color: #49121b;
+    transform: translateY(-2px);
+}
+
+    /* Applique un dégradé transparent en haut et en bas de chaque image flyer */
+.full-screen-img, .slider {
+  mask-image: linear-gradient(to bottom, 
+    transparent 0%, 
+    black 3%, 
+    black 97%, 
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(to bottom, 
+    transparent 0%, 
+    black 3%, 
+    black 97%, 
+    transparent 100%
+  );
+  /* On resserre les images pour qu'elles se chevauchent légèrement sur le dégradé */
+  margin-bottom: -60px; 
+}
+
+/* On enlève le dégradé sur le tout premier flyer pour que le haut soit net sous la nav */
+#event .slider {
+  mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+}
+
+    /* SECTIONS DE CONTENU */
+    #communaute, #contact {
+      padding: 20px 5px;
+      background: #ffffff;
+    }
+
+    /* SECTIONS DE CONTENU */
+    #event, #offreexclusive {
+      padding: 60px 0px;
+      background: #ffffff;
+    }
+/* ESPACEMENT PLUS PROPRE ENTRE LES SECTIONS */
+#presentation {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #fcfafb;
+  line-height: 0;
+}
+
+#presentation img {
+  display: block;
+  margin: 0;
+}
+
+#offreexclusive {
+  padding: 60px 20px !important;
+  margin: 0 !important;
+  background: #f9d7e6;
+}
+
+
+    #questionnaire {
+      background: #f9f8f9;
+    }
+
+    .stands-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      width: 100%;
+      max-width: 900px;
+      margin-top: 20px;
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    .stand-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .stand-card img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    /* FORMULAIRE */
+    .form-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: left;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #49121b;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-family: 'Inter', sans-serif !important;
+      cursor: pointer;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    /* LIGHTBOX */
+    #lightbox {
+      display: none;
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    #lightbox img { max-width: 95%; max-height: 85vh; border-radius: 5px; }
+
+#contact {
+  position: relative;
+  z-index: 1; /* Reste en arrière-plan par rapport au masque de débordement */
+  padding: 180px 20px; 
+  text-align: center;
+  color: #49121b;
+  margin-top: 0;
+  
+ 
+
+  
+  overflow: hidden;
+}
+
+/* Le voile violet (overlay) reste inchangé */
+#contact::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgb(255, 255, 255);
+  z-index: 1;
+}
+
+/* On s'assure que le contenu reste au-dessus du voile */
+#contact h2, #contact p, #contact a {
+  position: relative;
+  z-index: 2;
+}
+
+/* Affinage du Titre pour un look plus léger */
+#contact h2 {
+  font-weight: normal; /* Texte moins épais */
+  font-size: 1.1em;    /* Légèrement plus petit */
+  font-family: 'Inter', sans-serif !important;
+  margin-top: -5px;   /* Rapproche le titre du haut */
+  margin-bottom: 5px; /* Rapproche le texte descriptif */
+}
+
+/* Affinage du texte descriptif */
+#contact p {
+  font-weight: normal; 
+  font-size: 0.85em;   /* Un peu plus petit pour le look "liste" */
+  font-family: 'Inter', sans-serif !important;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Raccourcissement du bouton d'action */
+#contact a {
+  display: inline-block;
+  color: 49121b;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.0em;    /* Un peu plus petit */
+  border: 1px solid #f5db84; /* Bordure plus fine */
+  padding: 6px 14px;   /* Bouton beaucoup plus compact */
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+/* L'effet de survol (hover) reste */
+#contact a:hover {
+  background: #ffffff;
+  color: #49121b;
+}
+
+
+
+    #offreexclusive {
+      padding: 60px 20px;
+      background: #f9d7e6;
+      color: #49121b;
+      text-align: center;
+
+    }
+
+      #offreexclusive p {
+color: #000000; 
+  font-size: 0.85em;   /* Taille réduite comme demandé précédemment */
+  font-weight: normal;
+  font-family: 'Inter', sans-serif !important;
+
+    }
+
+
+    /* Style du Badge Star Argenté */
+.stand-card.star {
+  position: relative; /* Pour positionner le badge par rapport à la carte */
+  border: 1px solid #ddd;
+}
+
+.badge-star {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, #e0e0e0 0%, #ffffff 50%, #bdbdbd 100%);
+  color: #757575; /* Gris métallique comme sur ton image */
+  padding: 5px 12px;
+  font-size: 0.75em;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-bottom-left-radius: 12px; /* L'arrondi uniquement en bas à gauche */
+  box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  text-transform: uppercase;
+}
+
+.badge-star span {
+  font-size: 1.1em; /* Pour que l'étoile soit un peu plus grande */
+}
+    
+    
+    @media (min-width: 768px) {
+      .stands-container { grid-template-columns: repeat(2, 1fr); }
+      .full-screen-img, .slider { max-width: 450px; }
+      nav a { font-size: 0.9em; margin: 0 15px; }
+    }
+    @media (min-width: 1024px) {
+      .stands-container { grid-template-columns: repeat(3, 1fr); }
+    }
+
+
+
+/* Style du bouton Navbar identique au bouton flottant new version intégré à la navbar */
+.nav-btn-hayil {
+    background-color: #aa587d !important; /* Même violet/rose que ton bouton logo */
+    color: #e5c36f !important;           /* Même doré */
+    border: 1.5px solid #e5c36f !important; /* Bordure dorée identique */
+    padding: 6px 15px !important;
+    border-radius: 50px;                 /* Forme pilule élégante */
+    font-size: 0.65em !important;
+    font-weight: 700 !important;
+    font-family: 'Inter', sans-serif !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    margin-left: 10px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Effet au survol */
+.nav-btn-hayil:hover {
+    background-color: #49121b !important; /* On fonce un peu au survol comme ton bouton claim */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+/* Ajustement Mobile pour que tout tienne sur la ligne dorée */
+@media (max-width: 480px) {
+    nav a {
+        font-size: 0.55em; /* On réduit un peu les autres liens */
+        margin: 0 2px;
+    }
+    .nav-btn-hayil {
+        padding: 4px 8px !important;
+        font-size: 0.55em !important;
+        margin-left: 5px !important;
+    }
+}
+
+
+/* --- BOUTON FLOTTANT WEEZEVENT avant--- */
+.btn-hayil-premium {
+    position: fixed;
+    top: 85px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    /* Fond violet uni profond comme ton logo */
+    background: #aa587d; 
+    text-decoration: none;
+    border-radius: 50%;
+    z-index: 9999;
+    /* Ombre portée pour le relief */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    /* Bordure dorée fine pour rappeler l'écriture */
+    border: 2px solid #e5c36f; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    text-align: center;
+}
+
+.btn-hayil-premium .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-hayil-premium .logo-btn {
+    width: 70px; /* Taille du logo HAYIL */
+    height: auto;
+    margin: 0 auto 8px auto; /* distance le texte du logo */
+}
+
+.btn-hayil-premium .text-inscription {
+    /* Couleur dorée/champagne identique au logo */
+    color: #e5c36f; 
+    font-size: 9px !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Animation au survol */
+.btn-hayil-premium:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(123, 60, 123, 0.5);
+    background: #aa587d; /* Version légèrement plus claire au survol */
+}
+
+/* Adaptation Mobile */
+@media (max-width: 480px) {
+    .btn-hayil-premium {
+        width: 85px;
+        height: 85px;
+        top: 80px;
+        right: 15px;
+    }
+    .btn-hayil-premium .logo-btn {
+        width: 60px;
+    }
+    .btn-hayil-premium .text-inscription {
+        font-size: 0.55em;
+    }
+}
+
+
+
+/* Le conteneur doré */
+.card-gold {
+    background: linear-gradient(135deg, #fcfcfb 0%);
+    padding: 40px 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 500px;
+    margin: 40px auto;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.title-gold {
+    color: #49121b; /* Violet très foncé pour le contraste sur l'or */
+    font-size: 1.4em;
+    font-weight: 800;
+    font-family: 'Bodoni Moda', sans-serif  ;
+    margin-bottom: 15px;
+}
+
+.subtitle-gold {
+    color: #5d3a00;
+    font-size: 0.85em;
+    font-style: italic;
+    font-family:  'Inter', sans-serif ;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Le bouton rond au milieu */
+.btn-claim-gold {
+    display: inline-flex;
+    width: 120px;
+    height: 120px;
+    background: #49121b; 
+    border-radius: 50%;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.btn-claim-gold:hover {
+    transform: scale(1.1);
+}
+
+.content-claim {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.trophy {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.text-claim {
+    font-size: 0.65em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0 10px;
+}
+
+
+/* ==========================================================================
+   SECTION ÉVÉNEMENTS PASSÉS (CARROUSEL & MINI-SLIDERS)
+   ========================================================================== */
+
+#past-events {
+    background-color: #fcfbfb;
+    padding: 60px 20px;
+    text-align: center;
+    width: 100vw;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.past-title {
+    font-family: 'Bodoni Moda', sans-serif;
+    color: #49121b;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Zone globale du carrousel : On la cantonne à la largeur de l'écran */
+.carousel-wrapper {
+    position: relative;
+    max-width: 100%; /* S'assure que le wrapper ne dépasse jamais l'écran */
+    width: 1100px;   /* Largeur maximale idéale sur ordinateur */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    overflow: visible; /* Laisse les flèches déborder légèrement si besoin */
+}
+
+/* Conteneur horizontal des cartes : C'est LUI qui doit gérer le défilement et masquer le reste */
+.past-container {
+    display: flex;
+    overflow-x: auto; /* Active le défilement horizontal */
+    scroll-behavior: smooth;
+    gap: 20px;
+    width: 100%;
+    padding: 15px 10px; /* Un peu de padding pour ne pas couper l'ombre des cartes */
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Cache la scrollbar sur Firefox */
+    box-sizing: border-box; /* Inclut le padding dans la largeur totale */
+}
+
+.past-container::-webkit-scrollbar {
+    display: none; /* Cache la scrollbar sur Chrome/Safari */
+}
+
+/* Ajustement de la carte pour éviter les débordements de texte */
+.past-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    text-align: left;
+    border: 1px solid rgba(123, 60, 123, 0.1);
+    
+    /* Calcul ultra-précis pour éviter que la carte ne pousse les murs sur mobile */
+    flex: 0 0 calc(100% - 20px); 
+    scroll-snap-align: center;
+    box-sizing: border-box;
+    overflow: hidden; /* Empêche le texte de dépasser de la carte */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.past-card:hover {
+    transform: translateY(-3px);
+}
+
+/* CONSTRUCTEUR DU MINI-SLIDER IMAGE */
+.past-mini-slider {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.past-mini-slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Rendu de base de la première image */
+.past-mini-slider img.first-mini-slide {
+    position: relative;
+}
+
+/* Image active dans le diaporama */
+.past-mini-slider img.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Contenu textuel */
+.past-card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.past-card h3 {
+    font-family: 'Bodoni Moda', sans-serif;
+    color: #49121b;
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+}
+
+.past-date {
+    font-family: 'Inter', sans-serif;
+    color: #aa587d;
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.past-card p {
+    font-family: 'Inter', sans-serif;
+    color: #555;
+    font-size: 0.8em;
+    font-weight: 300;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Boutons Flèches de navigation */
+.carousel-btn {
+    background: #49121b;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.carousel-btn.left { left: -15px; }
+.carousel-btn.right { right: -15px; }
+
+/* Écrans larges : On affiche les 3 cartes alignées proprement */
+@media (min-width: 768px) {
+    .past-card {
+        flex: 0 0 calc(33.333% - 14px);
+        scroll-snap-align: start;
+    }
+    .carousel-btn { display: none; } /* Les flèches se masquent sur PC */
+}
+
+
+/* Style pour le lien du titre */
+.past-card-link {
+    text-decoration: none; /* Enlève le soulignement moche */
+    display: inline-block;
+}
+
+.past-card-link h3 {
+    transition: color 0.3s ease;
+}
+
+/* Effet au survol : le titre change de couleur pour montrer qu'il est cliquable */
+.past-card-link:hover h3 {
+    color: #aa587d; /* Il prend ton violet/rose au survol */
+}
+
+/* AJUSTEMENT SPÉCIFIQUE SECTION COMMUNAUTÉ POUR LE MASQUE BAS */
+#communaute {
+  position: relative;
+  z-index: 5;
+  width: 100vw;
+  padding: 0 !important;
+  margin-bottom: -50px; /* Force la section suivante à glisser un peu en dessous */
+}
+
+#communaute .slider {
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%) !important;
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%) !important;
+  margin-bottom: 0 !important;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+  </div>
+
+  <nav>
+    <a href="#event">Événement</a>
+    <a href="#presentation">Présentation</a>
+    <a href="#past-events">Communauté</a>
+    <a href="#contact">Contact</a>
+    <a href="TON_LIEN_WEEZEVENT" target="_blank" class="nav-btn-hayil">S'inscrire</a>
+  </nav>
+
+<div class="nav-spacer"></div>
+
+  <section id="event">
+    <img src="hayil.png" class="full-screen-img" alt="Bio Pasteure Grace">
+  </section>
+<!-- 
+  <section id="programme">
+    <img src="PROGRAMME-LADIES-CONVO-BBB.png" class="full-screen-img" alt="Programme">
+  </section>-->
+
+
+
+
+
+
+<section id="offreexclusive">
+  <div class="card-gold">
+    <h2 class="title-gold">PROGRAMME HAYIL <br> DU 8 JUIN AU 8 AOÛT À 297$ (paiement en 3x possible)</h2>
+    <h3>Challenge de force intérieure : <br>
+      <strong>3 mois pour bâtir un business et ton impact.</strong><br></h3>
+    
+    <p class="subtitle-gold">
+      *<strong>Challenge force intérieur où tu bénéficieras de :</strong><br><br>
+      - 6 appels live de groupe <br>
+      - 3 modules de formation <br>
+      - Groupe communautaire privé <br>
+      - Une ressource par mois<br>
+      - Ta page de vente prête le 3 ème mois<br><br>
+
+     </p>
+
+    <a href="#questionnaire" class="btn-claim-gold">
+      <div class="content-claim">
+        <span class="text-claim">JE REJOINS LE PROGRAMME</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+<section id="presentation">
+  <img src="gm-hayil.png" class="full-screen-img" alt="presentation">
+</section>
+
+
+
+<section id="offreexclusive">
+  <div class="card-gold">
+    <h2 class="title-gold">OFFRE EXCLUSIVE LES BOSS LADIES STARTER PACK À 497$</h2>
+    
+    <p class="subtitle-gold">
+      *<strong>Tu veux aller plus vite ? Soigne l’image d’abord.</strong><br><br>
+       Beaucoup de femmes ont la vision, le courage, le produit mais quand on visite leur page, on ne le voit pas, pas par manque de talent mais par manque d’outils.*
+    </p>
+
+    <a href="#questionnaire" class="btn-claim-gold">
+      <div class="content-claim">
+        <span class="text-claim">JE VEUX MON STARTER PACK</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+
+
+
+
+
+<section id="past-events">
+  <h2 class="past-title">  Rejoins toi aussi la communauté </h2>
+  <p> Connecte-toi à un réseau de femmes entrepreneures, courageuses et ambitieuses.<br><br> Retrouve en image nos précédents événements. </p>
+  <div class="carousel-wrapper">
+    <button class="carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+
+    <div class="past-container" id="pastContainer">
+      
+      <div class="past-card">
+        <div class="past-mini-slider">
+          <img src="gm2.jpeg" class="first-mini-slide active" alt="Ladies Convo 1">
+          <img src="lc5.jpeg" alt="Ladies Convo 1">
+          <img src="lc3.jpeg" alt="Ladies Convo 1">
+          <img src="lc7.jpeg" alt="Ladies Convo 1">
+          <img src="lc4.jpeg" alt="Ladies Convo 1">  
+          <img src="lc6.jpeg" alt="Ladies Convo 1">
+        </div>
+        <div class="past-card-content">
+          <span class="past-date">Mars 2026</span>
+          <a href="ladies-convo.html" class="past-card-link">
+            <h3>Ladies Convo</h3>
+          </a>
+          <p>Force intérieure et accomplissement. Une nuit "business, Beauty and Bible".</p>
+        </div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-mini-slider">
+          <img src="pb4.jpeg" class="first-mini-slide active" alt="Atelier Marque">
+          <img src="pb1.jpeg" alt="Atelier Marque">
+          <img src="pb2.jpeg" alt="Atelier Marque">
+          <img src="pb3.jpeg" alt="Atelier Marque">
+        </div>
+        <div class="past-card-content">
+          <span class="past-date">Février 2026</span>
+          <h3>Pink Brunch</h3>
+          <p>Rassemblement des femmes de la communauté les boss ladies.</p>
+        </div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-mini-slider">
+          <img src="event1.png" class="first-mini-slide active" alt="Masterclass">
+          <img src="event2.jpeg" alt="Masterclass">
+          <img src="event3.jpeg" alt="Masterclass">
+          <img src="event4.jpeg" alt="Masterclass">
+          <img src="event6.jpg" alt="Masterclass">
+        </div>
+        <div class="past-card-content">
+          <span class="past-date">Janvier 2026</span>
+          <h3>Atelier vision</h3>
+          <p>Structurer la vision et planifier les objectifs pour la nouvelle année. </p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
+  </div>
+</section>
+
+
+
+
+  <section id="communaute">
+    <div class="slider">
+      <img src="event1.png" class="slide first-slide active">
+      <img src="pb1.jpeg" class="slide">
+      <img src="pb4.jpeg" class="slide">
+      <img src="event3.jpeg" class="slide">
+      <img src="event4.jpeg" class="slide">    
+      <img src="lc6.jpeg" class="slide"> 
+      <img src="gm3.jpeg" class="slide"> 
+    </div>
+  </section>
+
+
+
+<section id="contact">
+  <h2>Contactez-nous</h2>
+  <p>Suivez l'aventure Lesbossladies sur Instagram</p>
+  <a href="https://www.instagram.com/lesbossladies" target="_blank">@lesbossladies</a>
+</section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let slides = document.querySelectorAll(".slide");
+      let currentIndex = 0;
+      function nextSlide() {
+        slides[currentIndex].classList.remove("active");
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides[currentIndex].classList.add("active");
+      }
+      if(slides.length > 1) setInterval(nextSlide, 4000);
+    });
+
+    function openLightbox(src) {
+      document.getElementById("lightbox").style.display = "flex";
+      document.getElementById("lightbox-img").src = src;
+    }
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+
+
+    // Fonction pour faire défiler le grand carrousel de cartes
+function scrollCarousel(direction) {
+  const container = document.getElementById('pastContainer');
+  const cardWidth = container.querySelector('.past-card').offsetWidth + 20; 
+  container.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+}
+
+// Fonction pour faire défiler automatiquement chaque diaporama dans les cartes
+document.addEventListener("DOMContentLoaded", function() {
+  let miniSliders = document.querySelectorAll(".past-mini-slider");
+
+  miniSliders.forEach(function(slider) {
+    let slides = slider.querySelectorAll("img");
+    let currentIndex = 0;
+
+    function nextMiniSlide() {
+      slides[currentIndex].classList.remove("active");
+      currentIndex = (currentIndex + 1) % slides.length;
+      slides[currentIndex].classList.add("active");
+    }
+
+    // Le diaporama s'active seulement s'il y a plus d'une photo
+    if (slides.length > 1) {
+      setInterval(nextMiniSlide, 3500); // Changement d'image toutes les 3,5 secondes
+    }
+  });
+});
+  </script>
+
+</body>
+</html>
